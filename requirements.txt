@@ -2,3 +2,6 @@ Flask
 openai
 python-dotenv
 gunicorn
+flask-cors
+ollama
+requests
