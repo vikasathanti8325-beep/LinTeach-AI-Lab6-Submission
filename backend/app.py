@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 from ollama import Client
 from pathlib import Path
@@ -28,7 +28,8 @@ CORS(app)
 
 @app.route("/")
 def home():
-    return "LinTeach AI Backend is running!"
+    frontend_path = Path(__file__).resolve().parent.parent / "frontend" / "index.html"
+    return send_file(frontend_path)
 
 
 @app.route("/api/chat", methods=["POST"])
