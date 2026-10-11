@@ -11,7 +11,14 @@ load_dotenv()
 OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "qwen2.5:3b")
 OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
 
-client = Client(host=OLLAMA_BASE_URL)
+OLLAMA_PROXY_TOKEN = os.getenv("OLLAMA_PROXY_TOKEN", "")
+
+client = Client(
+    host=OLLAMA_BASE_URL,
+    headers={
+        "Authorization": f"Bearer {OLLAMA_PROXY_TOKEN}"
+    } if OLLAMA_PROXY_TOKEN else {},
+)
 
 context_path = Path(__file__).resolve().parent.parent / "context" / "linear_algebra_context.md"
 context = context_path.read_text(encoding="utf-8")
