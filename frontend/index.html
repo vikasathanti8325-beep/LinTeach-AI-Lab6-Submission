@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background: #f4f7fb;
+        min-height: 100vh;
+    }
+
+    .container {
+        width: 90%;
+        max-width: 1000px;
+        margin: 40px auto;
+    }
+
+    .header {
+        background: white;
+        padding: 25px;
+        border-radius: 15px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    .header h1 {
+        color: #222;
+        margin-bottom: 8px;
+    }
+
+    .header p {
+        color: #666;
+    }
+
+    .chat-box {
+        background: white;
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    textarea {
+        width: 100%;
+        height: 100px;
+        padding: 15px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        font-size: 16px;
+        resize: vertical;
+    }
+
+    button {
+        margin-top: 12px;
+        padding: 12px 25px;
+        border: none;
+        border-radius: 8px;
+        background: #2563eb;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: #1d4ed8;
+    }
+
+    #response {
+        margin-top: 20px;
+        padding: 20px;
+        background: #f8fafc;
+        border-radius: 10px;
+        line-height: 1.7;
+        white-space: pre-wrap;
+    }
+</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinTeach AI</title>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LinTeach AI</title>
+
+<script>
+    window.MathJax = {
+        tex: {
+            inlineMath: [['\\(', '\\)']],
+            displayMath: [['\\[', '\\]']]
+        }
+    };
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1>LinTeach AI 🤖</h1>
+        <p>Your Interactive Linear Algebra Teaching Agent</p>
+    </div>
+
+    <div class="chat-box">
+
+        <textarea
+            id="question"
+            placeholder="Ask a Linear Algebra question..."
+        ></textarea>
+
+        <button id="askButton">Ask LinTeach AI</button>
+
+        <div id="response"></div>
+
+    </div>
+
+</div>
+
+    
+<script>
+    const questionBox = document.getElementById("question");
+    const askButton = document.getElementById("askButton");
+    const responseBox = document.getElementById("response");
+
+    askButton.addEventListener("click", async () => {
+
+        const question = questionBox.value.trim();
+
+        if (!question) {
+            responseBox.innerText = "Please enter a question.";
+            return;
+        }
+
+        responseBox.innerText = "LinTeach AI is thinking...";
+
+        try {
+            const response = await fetch("http://127.0.0.1:5000/api/chat", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    message: question
+                })
+            });
+
+            const data = await response.json();
+
+            responseBox.innerText = data.response;
+            if (window.MathJax) {
+    MathJax.typesetPromise([responseBox]);
+}
+        } catch (error) {
+            responseBox.innerText =
+                "Error: Could not connect to the LinTeach AI backend.";
+        }
+    });
+</script>=
+
+</body>
+</html>
